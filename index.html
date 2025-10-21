@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="game-style.css">
+</head>
+<body>
+    <div id="welcomeOverlay" class="welcome-overlay">
+        <div class="welcome-box">
+            <h2>Welcome!</h2>
+            <p>Please enter your name or nickname:</p>
+            <input type="text" id="visitorName" class="welcome-input" placeholder="Enter your name...">
+            <button onclick="submitName()" class="welcome-button">Continue</button>
+            
+            <div class="separator">or</div>
+            
+            <div class="social-login">
+                <a href="#" class="social-button discord-button">
+                    <i class="fab fa-discord"></i>
+                    Continue with Discord
+                </a>
+                <a href="#" class="social-button github-button">
+                    <i class="fab fa-github"></i>
+                    Continue with GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Disable scroll when overlay is shown
+        document.body.style.overflow = 'hidden';
+
+        function submitName() {
+            const name = document.getElementById('visitorName').value.trim();
+            if (name) {
+                document.getElementById('welcomeOverlay').style.display = 'none';
+                // Enable scroll after overlay is closed
+                document.body.style.overflow = 'auto';
+                // Update the greeting
+                const greeting = document.querySelector('.header-subtitle');
+                greeting.textContent = `Welcome, ${name}! | Game Developer & Designer`;
+            }
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('visitorName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitName();
+            }
+        });
+
+        // Also handle Discord and GitHub buttons to enable scroll
+        document.querySelector('.discord-button').addEventListener('click', function() {
+            document.getElementById('welcomeOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        document.querySelector('.github-button').addEventListener('click', function() {
+            document.getElementById('welcomeOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    </script>
+
+    <script>
+        // Theme toggling functionality
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const themeToggleButton = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggleButton.querySelector('i');
+            const themeText = themeToggleButton.querySelector('.theme-text');
+            
+            if (htmlElement.getAttribute('data-theme') === 'dark') {
+                htmlElement.removeAttribute('data-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                themeText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                themeText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            const themeToggleButton = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggleButton.querySelector('i');
+            const themeText = themeToggleButton.querySelector('.theme-text');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            themeText.textContent = 'Light Mode';
+        }
+    </script>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navList = document.querySelector('.nav-list');
+
+            // Mobile menu toggle
+            navToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navList.classList.toggle('nav-active');
+                this.classList.toggle('nav-toggle-active');
+                
+                // Toggle icon between bars and times
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('fa-bars')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-list') && navList.classList.contains('nav-active')) {
+                    navList.classList.remove('nav-active');
+                    navToggle.classList.remove('nav-toggle-active');
+                    const icon = navToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navList.classList.remove('nav-active');
+                    navToggle.classList.remove('nav-toggle-active');
+                    const icon = navToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // Close mobile menu when clicking the theme toggle
+            document.querySelector('.theme-toggle').addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navList.classList.remove('nav-active');
+                    navToggle.classList.remove('nav-toggle-active');
+                    const icon = navToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
+
+    <!-- Header section - Для фонового изображения замените класс header на header-with-bg и добавьте свое изображение в папку images -->
+    <header class="header">
+        <div class="container">
+            <!-- Для фото профиля: загрузите изображение размером 150x150 пикселей в папку images и обновите путь -->
+            <img src="images.jpg" alt="Ваше фото" class="profile-image">
+            <h1>Elmar Toktosunov</h1>
+            <p class="header-subtitle">Web Developer & Designer</p>
+            <div class="header-buttons">
+                <a href="#projects" class="btn btn-primary">My project</a>
+                <a href="#contact" class="btn btn-secondary">Contact me</a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-list">
+            <li><a href="#about" class="nav-link">About Me</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#experience" class="nav-link">Experience</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#education" class="nav-link">Education</a></li>
+            <li><a href="#achievements" class="nav-link">Achievements</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+            <li>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                    <span class="theme-text">Dark Mode</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="highlight-text">Level 25 Game Developer | Quest: Creating Immersive Digital Worlds</p>
+                    <p>Greetings, Player One! I'm Elmar, a passionate game developer on a mission to create extraordinary gaming experiences. Armed with cutting-edge game engines and a creative mindset, I transform ideas into interactive realities.</p>
+                    <p>Main quest objectives include crafting engaging gameplay mechanics, optimizing performance, and creating unforgettable player experiences. Currently specializing in:</p>
+                    <ul class="about-list">
+                        <li>🎮 Game Engine Mastery (Unity, Unreal)</li>
+                        <li>🔧 Game Mechanics & Systems</li>
+                        <li>🎨 Visual Effects & UI/UX</li>
+                        <li>🤖 AI & Game Logic</li>
+                    </ul>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">15K+</span>
+                            <span class="stat-label">Lines of Code</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">Projects</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">3</span>
+                            <span class="stat-label">Clients</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-frame">
+                    <img src="borat.jpg" alt="Game Developer Portrait">
+                    <div class="game-frame-corner top-left"></div>
+                    <div class="game-frame-corner top-right"></div>
+                    <div class="game-frame-corner bottom-left"></div>
+                    <div class="game-frame-corner bottom-right"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">My Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <i class="fas fa-gamepad skill-icon"></i>
+                    <h3>Game Engines</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 95%"></div>
+                    </div>
+                    <p>Unity3D, Unreal Engine 5, Godot - Advanced game development and optimization</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-code skill-icon"></i>
+                    <h3>Programming</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 90%"></div>
+                    </div>
+                    <p>C#, C++, Python - Game systems and AI implementation</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-vr-cardboard skill-icon"></i>
+                    <h3>VR/AR Development</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 85%"></div>
+                    </div>
+                    <p>Oculus, SteamVR, ARKit/ARCore integration and optimization</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-brain skill-icon"></i>
+                    <h3>AI & Game Logic</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 88%"></div>
+                    </div>
+                    <p>Behavior trees, pathfinding, decision making systems</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-layer-group skill-icon"></i>
+                    <h3>Game Architecture</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 92%"></div>
+                    </div>
+                    <p>Design patterns, optimization, multiplayer networking</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-pencil-ruler skill-icon"></i>
+                    <h3>Technical Design</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 87%"></div>
+                    </div>
+                    <p>System design, performance optimization, tools development</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-users-cog skill-icon"></i>
+                    <h3>Team Leadership</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 85%"></div>
+                    </div>
+                    <p>Technical team management, code review, mentoring</p>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-mobile-alt skill-icon"></i>
+                    <h3>Mobile Gaming</h3>
+                    <div class="skill-level">
+                        <div class="skill-bar" style="width: 90%"></div>
+                    </div>
+                    <p>iOS/Android optimization, cross-platform development</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Junior Game Developer</h3>
+                        <p class="timeline-period">2024 - Present</p>
+                        <p class="timeline-company">GameStudio X</p>
+                        <ul class="timeline-details">
+                            <li>Developed gameplay mechanics for mobile games using Unity3D</li>
+                            <li>Implemented physics-based character controllers</li>
+                            <li>Collaborated with artists to integrate visual assets</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Game Development Intern</h3>
+                        <p class="timeline-period">2023 - 2024</p>
+                        <p class="timeline-company">Indie Game Studio</p>
+                        <ul class="timeline-details">
+                            <li>Assisted in creating prototypes for new game concepts</li>
+                            <li>Designed and implemented UI elements</li>
+                            <li>Created particle effects and visual feedback systems</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="section-title">My Projects</h2>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <img src="svd.jpg" alt="Project 1" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Adventure Quest</h3>
+                        <p class="project-description">A thrilling mobile adventure game with rich storyline and challenging puzzles.</p>
+                        <div class="project-tags">
+                            <span class="tag">Unity3D</span>
+                            <span class="tag">C#</span>
+                            <span class="tag">Mobile</span>
+                        </div>
+                        <a href="#" class="project-link">Learn More</a>
+                    </div>
+                </article>
+                <article class="project-card">
+                    <img src="ddd.jpg" alt="Project 2" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Space Explorer</h3>
+                        <p class="project-description">A space exploration game with realistic physics and stunning visuals.</p>
+                        <div class="project-tags">
+                            <span class="tag">Unity3D</span>
+                            <span class="tag">VFX</span>
+                            <span class="tag">Physics</span>
+                        </div>
+                        <a href="#" class="project-link">Learn More</a>
+                    </div>
+                </article>
+                <article class="project-card">
+                    <img src="puz.jpg" alt="Project 3" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Puzzle Master</h3>
+                        <p class="project-description">An innovative puzzle game with unique mechanics and beautiful art style.</p>
+                        <div class="project-tags">
+                            <span class="tag">Unity3D</span>
+                            <span class="tag">Game Design</span>
+                            <span class="tag">2D Art</span>
+                        </div>
+                        <a href="#" class="project-link">Learn More</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Education & Certifications</h2>
+            <div class="education-grid">
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Bachelor in Computer Science</h3>
+                    <p class="education-place">Technical University</p>
+                    <p class="education-period">2020 - 2024</p>
+                    <p class="education-description">Specialized in Game Development and Computer Graphics</p>
+                </div>
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Unity Certified Developer</h3>
+                    <p class="education-place">Unity Technologies</p>
+                    <p class="education-period">2024</p>
+                    <p class="education-description">Professional certification in Unity game development</p>
+                </div>
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Game Design Masterclass</h3>
+                    <p class="education-place">Online Course</p>
+                    <p class="education-period">2023</p>
+                    <p class="education-description">Advanced game design principles and practices</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="section">
+        <div class="container">
+            <h2 class="section-title">Achievements</h2>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Game Jam Winner</h3>
+                    <p>First place in Local Game Jam 2024</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>10K+ Downloads</h3>
+                    <p>For mobile game "Adventure Quest"</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>4.8 Star Rating</h3>
+                    <p>Average rating across all published games</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Leader</h3>
+                    <p>Active member in game dev community</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <h3>Email</h3>
+                        <p>elmar.dev@example.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <h3>Phone</h3>
+                        <p>+996 (556) 000 926</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <h3>Location</h3>
+                        <p>Bishkek, Kyrgyzstan</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" id="name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" id="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message:</label>
+                        <textarea id="message" class="form-textarea" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="footer-text">&copy; 2025 Elmar Toktosunov. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <!-- Кнопка прокрутки вверх -->
+<button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<script>
+    const scrollButton = document.getElementById('scrollToTop');
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollButton.classList.add('show');
+        } else {
+            scrollButton.classList.remove('show');
+        }
+    });
+
+    scrollButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+<script>
+    // Плавная прокрутка для всех ссылок с якорями
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Кнопка прокрутки вверх
+    const scrollButton = document.getElementById('scrollToTop');
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollButton.classList.add('show');
+        } else {
+            scrollButton.classList.remove('show');
+        }
+    });
+
+    scrollButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+</body>
+</html>
